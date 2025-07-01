@@ -2784,7 +2784,7 @@ Body: x-www-form-urlencoded
 
 judul: Judul Artikel 7 diubah
 
-isi: Isi Artikel ke 7 diubah melalui API by Ardho
+isi: Isi Artikel ke 7 diubah melalui API by Nurulfir
 
 📸 Screenshot:
 
