@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artikel Management</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <button id="btn-tambah" @click="tambah">
+        <i class="fas fa-plus"></i> Tambah Artikel
+      </button>
+
+      <div class="modal" v-if="showForm">
+        <div class="modal-content">
+          <span class="close" @click="showForm = false">&times;</span>
+          <form id="form-data" @submit.prevent="saveData">
+            <h3 id="form-title">
+              <i :class="formData.id ? 'fas fa-edit' : 'fas fa-plus'"></i>
+              {{ formTitle }}
+            </h3>
+            <div>
+              <input
+                type="text"
+                v-model="formData.judul"
+                placeholder="Judul Artikel"
+                required
+              />
+            </div>
+            <div>
+              <textarea
+                v-model="formData.isi"
+                rows="10"
+                placeholder="Isi artikel..."
+              ></textarea>
+            </div>
+            <div>
+              <select v-model.number="formData.status">
+                <option v-for="option in statusOptions" :value="option.value">
+                  {{ option.text }}
+                </option>
+              </select>
+            </div>
+            <input type="hidden" v-model="formData.id" />
+            <button type="submit" id="btnSimpan">
+              <i class="fas fa-save"></i> Simpan
+            </button>
+            <button type="button" @click="showForm = false">
+              <i class="fas fa-times"></i> Batal
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <h1><i class="fas fa-newspaper"></i> Daftar Artikel</h1>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Judul</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(row, index) in artikel" :key="row.id">
+            <td class="center-text">{{ row.id }}</td>
+            <td>{{ row.judul }}</td>
+            <td>
+              <span :class="'status-badge status-' + statusClass(row.status)">
+                {{ statusText(row.status) }}
+              </span>
+            </td>
+            <td class="center-text">
+              <a href="#" @click="edit(row)" class="action-link edit-link">
+                <i class="fas fa-edit"></i> Edit
+              </a>
+              <a
+                href="#"
+                @click="hapus(index, row.id)"
+                class="action-link delete-link"
+              >
+                <i class="fas fa-trash-alt"></i> Hapus
+              </a>
+            </td>
+          </tr>
+          <tr v-if="artikel.length === 0">
+            <td colspan="4" class="empty-state">
+              <i
+                class="fas fa-inbox"
+                style="font-size: 2rem; margin-bottom: 1rem"
+              ></i>
+              <p>Tidak ada artikel yang tersedia.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <script src="assets/app.js"></script>
+  </body>
+</html>
